@@ -203,7 +203,7 @@ ESP32 启动：mbedTLS AES-128-CBC 解密 → 只在内存中还原 → 不打�
 | 文件 | 是否提交 | 作用 |
 |------|:---:|------|
 | `secrets.example.ini` | ✅ | 模板，只有占位符 |
-| `secrets.ini` | ❌ | 本地真实凭据（已 gitignore，**永远不要提交**） |
+| `secrets.ini` | ❌ | 本地真实凭据
 | `tools/gen_secrets.py` | ✅ | 读取 ini、加密、生成头文件；无 ini 时生成演示模式 |
 | `tools/aes128.py` | ✅ | 纯 Python 的 AES-128-CBC 实现（无第三方依赖） |
 | `tools/pio_secrets.py` | ✅ | PlatformIO 构建前自动调用生成脚本 |
