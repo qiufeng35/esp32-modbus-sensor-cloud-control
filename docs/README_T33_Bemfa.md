@@ -32,19 +32,20 @@
 | 318 ~ 337 | `setup()` | 五个初始化 + `User_WifiCheck` + `WIFI_Init`（提交请求，不阻塞） |
 | 339 ~ 345 | `loop()` | `WIFI_Loop` → `Bemfa_Task` → `Sensor_Loop` → `Console_Poll` → `RS485_Loop` |
 
-## 二、要改的只有一行
+## 二、密钥配置（当前版本）
 
-```cpp
-// src/main.cpp 第 31 行：换成你自己的 32 位私钥（巴法云「连接密钥」页）
-# （当前版本私钥已移出源码，见根目录 README「密钥加密」）
+```ini
+# 复制 secrets.example.ini 为 secrets.ini，填入以下四项：
+[secrets]
+passphrase    = 一串足够长的加密口令
+wifi_ssid     = 你的2.4G热点名
+wifi_password = 你的WiFi密码
+bemfa_uid     = 你的32位巴法云私钥
 ```
 
-WiFi 名字与密码**不在本文件**，在 `src/01_user/inc/User_Config.h`：
-
-```cpp
-#define USER_WIFI_SSID       "你的热点名"       // 2.4G
-#define USER_WIFI_PASSWORD   "你的热点密码"
-```
+构建时 `tools/gen_secrets.py` 会把 `secrets.ini` 用 AES-128-CBC 加密成
+`src/05_secrets/gen/secret_blob.h`，运行时由 `05_secrets` 解密到内存；
+仓库与源码中不出现明文凭据（详见根目录 README「密钥加密」）。
 
 服务器与端口不用改：巴法云固定 `bemfa.com:9501`（另有加密口 9503）。
 
@@ -101,6 +102,8 @@ WiFi 名字与密码**不在本文件**，在 `src/01_user/inc/User_Config.h`：
 
 ### 串口命令（`help` 全部列出）
 
+> 下表是当时版本的命令；当前发布版已精简为 11 条，见根目录 README「串口命令」。
+
 | 命令 | 作用 |
 |------|------|
 | `sensor` / `sensor <行号>` | 看整张表 / 看某一行（含原始值十六进制） |
@@ -141,7 +144,7 @@ T33_Bemfa/
 ```
 
 串口命令台：`sensor` / `time` / `cal` / `period` / `help` 原样保留；
-`wifi` / `wifiscan` / `nettest` 已恢复；另新增 `mqtt` / `pub` / `cloudtest`。
+`wifi` / `wifiscan` / `nettest` 已恢复；另新增 `mqtt` / `pub` / `cloudtest`（均为历史版本）。
 
 ★ WiFi 的"连没连上"只有 `04_driver/src/wifi.cpp` 一份状态（setup 里 `WIFI_Init` 提交、
 loop 里 `WIFI_Loop` 推进），命令台和上云层都问它（`WIFI_IsConnected`），

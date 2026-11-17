@@ -1,8 +1,9 @@
 // ============================================================
 //  secret_store.cpp —— 加密密钥存储（实现）
 //
-//  密文由 tools/gen_secrets.py 在编译前生成：AES-128-CBC + PKCS#7，
-//  密钥材料（KEY/IV）由 secrets.ini 的 passphrase 经 PBKDF2-HMAC-SHA256 派生。
+//  密文由 tools/gen_secrets.py 在编译前生成：AES-128-CBC + PKCS#7；
+//  AES 密钥（KEY）由 secrets.ini 的 passphrase 经 PBKDF2-HMAC-SHA256 派生，
+//  IV 在每次生成时随机（与密文一起存放在生成的头文件里）。
 //  这里只负责「解出来、按格式拆开」，解密失败一律当作未配置处理，
 //  绝不把密文或明文打到串口。
 // ============================================================

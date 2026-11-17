@@ -26,3 +26,7 @@ secrets.local.ini
 
 # 构建期生成的加密密钥头文件（含密文与密钥材料）
 src/05_secrets/gen/
+
+# ===== Python 缓存（构建期脚本会生成）=====
+__pycache__/
+*.py[cod]
